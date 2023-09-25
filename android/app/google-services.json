@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "180985451187",
+    "project_id": "m-ola-fe680",
+    "storage_bucket": "m-ola-fe680.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:180985451187:android:0ff5a5cd71890f866656c6",
+        "android_client_info": {
+          "package_name": "com.near.mola.m_ola"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "180985451187-jqj6upsnivjb8b35l7in8u77cfc53jui.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.near.mola.m_ola",
+            "certificate_hash": "234ea6c24d3557b849f80a580e335053b3c2986a"
+          }
+        },
+        {
+          "client_id": "180985451187-ngrme1n0it4e7k1q69pt7tgfce25qn96.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwMw-L65MfBa2UGv6p3s-o9rv4FC4sqg0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "180985451187-marrps8lq5qt7k9looprpe0e1p08vqun.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

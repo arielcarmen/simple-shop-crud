@@ -1,15 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:m_ola/views/details.dart';
 import 'package:m_ola/views/homescreen.dart';
 import 'package:m_ola/views/login.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-void main() async{
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp();
+  await Firebase.initializeApp();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
@@ -19,11 +17,8 @@ void main() async{
       primarySwatch: Colors.pink,
       primaryColor: Colors.pinkAccent
     ),
-    initialRoute: '/',
-    routes: {
-      '/': (context) => const LoginScreen(),
-      '/products': (context) => const HomeScreen(),
-    },
+    home: const HomeScreen(),
+
   ));
 }
 

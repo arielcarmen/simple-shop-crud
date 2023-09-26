@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:m_ola/views/homescreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../main.dart';
@@ -34,10 +35,8 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
           setState(() {
             _isSigningIn = true;
           });
-          print("checking...");
           User? user =
           await Authentication.signInWithGoogle(context: context);
-          print(user);
           setState(() {
             _isSigningIn = false;
             
@@ -48,7 +47,7 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
             var isLoggedIn = prefs.setBool('logged', true);
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                builder: (context) => const Home()
+                builder: (context) => const HomeScreen()
               ),
             );
           }

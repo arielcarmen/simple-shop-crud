@@ -15,7 +15,8 @@ void main() async {
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
       primarySwatch: Colors.pink,
-      primaryColor: Colors.pinkAccent
+      primaryColor: Colors.pinkAccent,
+      fontFamily: 'Poppins'
     ),
     home: const HomeScreen(),
 

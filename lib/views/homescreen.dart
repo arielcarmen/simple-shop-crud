@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:m_ola/views/login.dart';
+import 'package:m_ola/widgets/custom_menu_tile.dart';
 import 'details.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -12,20 +15,27 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final CollectionReference _productsStream = FirebaseFirestore.instance.collection('articles');
+  int productCount = 0;
+  String productValue = "";
 
   @override
   Widget build(BuildContext context) {
+    productValue =  productCount.toString();
     return Scaffold(
+      backgroundColor: const Color(0xfffffff5),
       appBar: AppBar(
         title: const Text('Accueil'),
         actions: [
           IconButton(
-            onPressed: (){
+            onPressed: () async {
+              _getProductsCount();
+
               final FirebaseAuth auth = FirebaseAuth.instance;
-              final User user = auth.currentUser!;
+              final SharedPreferences prefs = await SharedPreferences.getInstance();
+              bool isLoggedIn = prefs.getBool('logged')!;
               Navigator.of(context).push(
                   MaterialPageRoute(
-                      builder: (context) => UserInfoScreen(user: user)
+                      builder: (context) => isLoggedIn ? UserInfoScreen(user: auth.currentUser!) : const LoginScreen()
                   )
               );
             },
@@ -37,7 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-
         children: [
           Card(
             elevation: 10,
@@ -45,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
               borderRadius: const BorderRadius.all(Radius.circular(3.0)),
               child: Container(
                 decoration: const BoxDecoration(
-                  color: Color(0xffc0c0c0),
+                  color: Colors.white,
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black38,
@@ -55,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     )
                   ]
                 ),
-                child: const Padding(
+                child: Padding(
                   padding: EdgeInsets.all(10),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
@@ -65,8 +74,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 10,
                       ),
                       Text(
-                        'w XOF',
-                        style: TextStyle(fontSize: 22, color: Colors.white),
+                        '$productValue',
+                        style: TextStyle(fontSize: 22, color: Colors.pink),
                       ),
                       SizedBox(height: 10),
                       Text(
@@ -79,11 +88,38 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          // GridView.count(
-          //   crossAxisCount: 2,
-          // )
+          Expanded(
+            child: GridView.count(
+              physics: BouncingScrollPhysics(),
+              crossAxisCount: 3,
+              children: const [
+
+                CustomMenuTile(title: "Savon", pic: AssetImage("assets/icons/cleansing.png")),
+                CustomMenuTile(title: "Lotion", pic: AssetImage("assets/icons/ampoule.png")),
+                CustomMenuTile(title: "Savons", pic: AssetImage("assets/icons/cleansing.png")),
+                CustomMenuTile(title: "Savons", pic: AssetImage("assets/icons/cleansing.png")),
+                CustomMenuTile(title: "Savons", pic: AssetImage("assets/icons/cleansing.png")),
+                CustomMenuTile(title: "Savons", pic: AssetImage("assets/icons/cleansing.png")),
+                CustomMenuTile(title: "Savons", pic: AssetImage("assets/icons/cleansing.png")),
+                CustomMenuTile(title: "Savons", pic: AssetImage("assets/icons/cleansing.png")),
+                CustomMenuTile(title: "Savons", pic: AssetImage("assets/icons/cleansing.png")),
+                CustomMenuTile(title: "Savons", pic: AssetImage("assets/icons/cleansing.png")),
+                CustomMenuTile(title: "Savons", pic: AssetImage("assets/icons/cleansing.png")),
+                CustomMenuTile(title: "Savons", pic: AssetImage("assets/icons/cleansing.png")),
+              ],
+            ),
+          )
         ],
       ),
     );
   }
+
+  void _getProductsCount() async{
+    productCount = await _productsStream.snapshots().length;
+    print(_productsStream.snapshots());
+    setState(() {
+      productValue = productCount.toString();
+    });
+  }
 }
+

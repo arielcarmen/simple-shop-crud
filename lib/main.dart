@@ -19,7 +19,6 @@ void main() async {
       fontFamily: 'Poppins'
     ),
     home: const HomeScreen(),
-
   ));
 }
 

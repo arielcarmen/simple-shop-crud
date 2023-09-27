@@ -28,7 +28,6 @@ class _ProductsState extends State<Products> {
   String dropdownvalue = 'Cheveux';
   var db = FirebaseFirestore.instance;
 
-
   @override
   void initState() {
     super.initState();
@@ -221,8 +220,9 @@ class _ProductsState extends State<Products> {
 
   final CollectionReference _productsStream = FirebaseFirestore.instance.collection('articles');
 
-  Widget productImage(String url){
-    return url == "url"  ? Image.asset('assets/images/noimage.jpg', height: 50,) : Image.network(url, height: 50,);
+  Widget productImage(String url, String category){
+    return url == "url"  ? Image.asset('assets/icons/${category.toLowerCase()}.png', height: 30, width: 30,)
+        : Image.network(url, height: 30, width: 30,);
   }
 
   final searchText = ValueNotifier<String>('');
@@ -231,7 +231,7 @@ class _ProductsState extends State<Products> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Articles')
+        title: const Text('Tous les articles')
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: _productsStream.snapshots(),
@@ -253,9 +253,9 @@ class _ProductsState extends State<Products> {
                     return Padding(
                       padding: const EdgeInsets.only(top: 8),
                       child: Card(
-                        margin: const EdgeInsets.fromLTRB(20, 6, 20, 0),
+                        margin: const EdgeInsets.fromLTRB(15, 6, 15, 0),
                         child: ListTile(
-                          contentPadding: EdgeInsets.all(18),
+                          contentPadding: EdgeInsets.symmetric(vertical: 5,horizontal: 15),
                           onLongPress: (){
                             showDeleteDialog(context, document, data['name']);
                           },
@@ -265,7 +265,7 @@ class _ProductsState extends State<Products> {
                           },
                              leading: ClipRRect(
                                borderRadius: BorderRadius.circular(8),
-                               child: productImage(data['url']),
+                               child: productImage(data['url'],data['category']),
                              ),
                           trailing: Text('${data['price']}'),
                              title: Text(data['name']),

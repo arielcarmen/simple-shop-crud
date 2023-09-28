@@ -65,8 +65,8 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
+
           children: [
-            Row(),
             _user.photoURL != null
                 ? ClipOval(
               child: Material(
@@ -80,12 +80,13 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                 : ClipOval(
               child: Material(
                 color: Colors.grey[300],
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Icon(
-                    Icons.person,
-                    size: 60,
-                    color: Colors.grey,
+                child: const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Image(
+                    fit: BoxFit.fitHeight,
+                    image: AssetImage(
+                        "assets/logos/logo_blanc.png"
+                    ),
                   ),
                 ),
               ),
@@ -108,7 +109,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
             ),
             SizedBox(height: 8.0),
             Text(
-              '( ${_user.email!} )',
+              _user.email!,
               style: TextStyle(
                 color: Colors.orange[600],
                 fontSize: 20,
@@ -125,7 +126,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
             ),
             SizedBox(height: 16.0),
             _isSigningOut
-                ? CircularProgressIndicator(
+                ? const CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
             )
                 : ElevatedButton(

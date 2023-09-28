@@ -14,8 +14,8 @@ void main() async {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
-      primarySwatch: Colors.pink,
-      primaryColor: Colors.pinkAccent,
+      primarySwatch: Colors.red,
+      primaryColor: Colors.pink[200],
       fontFamily: 'Poppins'
     ),
     home: const HomeScreen(),

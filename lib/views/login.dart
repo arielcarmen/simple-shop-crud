@@ -14,13 +14,21 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Image(image: AssetImage("assets/images/google_image.png")),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: [
+                  const Image(
+                    image: AssetImage("assets/logos/logo_blanc.png"),
+                    height: 400,
+                  ),
+                  GoogleSignInButton()
+                ],
+              ),
             ),
-            GoogleSignInButton()
+
           ],
         ),
       ),

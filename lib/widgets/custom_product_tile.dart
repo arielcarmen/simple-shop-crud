@@ -18,6 +18,6 @@ class CustomProductTile extends StatelessWidget {
   }
 
   Widget productImage(String url){
-    return url == "url"  ? Image.asset('assets/icons/cleansing.png', height: 50,) : Image.network(url, height: 50,);
+    return url == "url"  ? Image.asset('assets/icons/savons.png', height: 50,) : Image.network(url, height: 50,);
   }
 }

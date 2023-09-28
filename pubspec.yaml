@@ -42,6 +42,7 @@ dependencies:
   google_sign_in: ^6.0.2
   shared_preferences: ^2.1.0
   image_picker: ^1.0.4
+  flutter_fast_forms: ^12.0.0
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +70,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/logos/
 #    - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

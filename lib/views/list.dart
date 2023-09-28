@@ -1,8 +1,9 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:m_ola/models/product.dart';
 import 'package:flutter/material.dart';
+import 'package:m_ola/utils/tools.dart';
+import 'package:m_ola/views/add_form.dart';
 
 class Products extends StatefulWidget {
   const Products({Key? key}) : super(key: key);
@@ -220,11 +221,6 @@ class _ProductsState extends State<Products> {
 
   final CollectionReference _productsStream = FirebaseFirestore.instance.collection('articles');
 
-  Widget productImage(String url, String category){
-    return url == "url"  ? Image.asset('assets/icons/${category.toLowerCase()}.png', height: 30, width: 30,)
-        : Image.network(url, height: 30, width: 30,);
-  }
-
   final searchText = ValueNotifier<String>('');
 
   @override
@@ -236,9 +232,26 @@ class _ProductsState extends State<Products> {
       body: StreamBuilder<QuerySnapshot>(
         stream: _productsStream.snapshots(),
         builder: (context, snapshot){
-          if(!snapshot.hasData){
+          if(!snapshot.hasData || snapshot.data!.docs.toList().isEmpty){
             return const Center(
-              child: Text('Aucun article'),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image(
+                    image: AssetImage(
+                      "assets/icons/no_product.png",
+                    ),
+                    height: 100,
+                  ),
+                  Text(
+                    'Aucun article',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700
+                    ),
+                  ),
+                ],
+              ),
             );
           } else if(snapshot.hasError){
             return const Center(
@@ -263,12 +276,13 @@ class _ProductsState extends State<Products> {
                             Product sProduct = Product(data['name'], data['details'], data['price'], data['category'], data['url'], data['added_by'], data['edited_by']);
                             //Navigator.push(context, MaterialPageRoute(builder: (context) => Detail(db: db, documentId: document.id,product: sProduct,)));
                           },
-                             leading: ClipRRect(
-                               borderRadius: BorderRadius.circular(8),
-                               child: productImage(data['url'],data['category']),
-                             ),
+                           leading: ClipRRect(
+                             borderRadius: BorderRadius.circular(8),
+                             child: productImage(data['url'],data['category']),
+                           ),
                           trailing: Text('${data['price']}'),
-                             title: Text(data['name']),
+                          title: Text(data['name']),
+                          subtitle: Text('${data['category']}'),
                            ),
                       ),
                     );
@@ -280,9 +294,12 @@ class _ProductsState extends State<Products> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.orange,
+        backgroundColor: Colors.pink,
         onPressed: () async {
-          await showAddDialog(context);
+          // await showAddDialog(context);
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const AddForm())
+          );
         },
         child: const Icon(Icons.add_shopping_cart),
       ),

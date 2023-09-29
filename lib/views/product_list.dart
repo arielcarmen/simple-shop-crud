@@ -69,11 +69,18 @@ class _ProductListState extends State<ProductList> {
                         Product sProduct = Product(data['name'], data['details'], data['price'], data['category'], data['url'], data['added_by'], data['edited_by']);
                         //Navigator.push(context, MaterialPageRoute(builder: (context) => Detail(db: db, documentId: document.id,product: sProduct,)));
                       },
-                      leading: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: productImage(data['url'],data['category']),
+                      // leading: ClipRRect(
+                      //   borderRadius: BorderRadius.circular(2),
+                      //   child: productImage(data['url'],data['category']),
+                      // ),
+                      trailing: Text(
+                          '${data['price']}',
+                        style: const TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w300,
+                          color: Colors.redAccent
+                        ),
                       ),
-                      trailing: Text('${data['price']}'),
                       title: Text(data['name']),
                     ),
                   ),

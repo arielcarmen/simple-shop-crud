@@ -18,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen>{
   final CollectionReference _productsStream = FirebaseFirestore.instance.collection('articles');
   var productCount = 0;
   String productValue = "";
+  List<String> categories = ["Savons", "Sérums", "Accessoires", "Outils"];
 
   @override
   void initState() {
@@ -193,12 +194,7 @@ class _HomeScreenState extends State<HomeScreen>{
             child: GridView.count(
               physics: const BouncingScrollPhysics(),
               crossAxisCount: 3,
-              children: const [
-                CustomMenuTile(title: "Savons", pic: AssetImage("assets/icons/savons.png")),
-                CustomMenuTile(title: "Sérums", pic: AssetImage("assets/icons/sérums.png")),
-                CustomMenuTile(title: "Lotions", pic: AssetImage("assets/icons/lotions.png")),
-                CustomMenuTile(title: "Laits", pic: AssetImage("assets/icons/laits.png")),
-              ],
+              children: _buildGridView(categories)
             ),
           )
         ],
@@ -213,6 +209,14 @@ class _HomeScreenState extends State<HomeScreen>{
         onError: (e) => print("Error completing: $e"),
       );
     });
+  }
+
+  List<Widget> _buildGridView(List categories){
+    List<Widget> _gridItems = [];
+    for (String category in categories){
+      _gridItems.add(CustomMenuTile(title: category, pic: AssetImage("assets/icons/${category.toLowerCase()}.png")));
+    }
+    return _gridItems;
   }
 }
 

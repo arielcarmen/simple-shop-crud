@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:m_ola/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:m_ola/utils/tools.dart';
@@ -223,11 +224,16 @@ class _ProductsState extends State<Products> {
 
   final searchText = ValueNotifier<String>('');
 
+  TextEditingController _searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tous les articles')
+        title: CupertinoSearchTextField(
+          controller: _searchController,
+          backgroundColor: Colors.white,
+        )
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: _productsStream.snapshots(),

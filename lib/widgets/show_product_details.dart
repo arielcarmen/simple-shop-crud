@@ -1,10 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:m_ola/models/product.dart';
+import 'package:m_ola/utils/tools.dart';
 
 class ProductDetails extends StatelessWidget {
-  const ProductDetails({Key? key}) : super(key: key);
+  const ProductDetails({Key? key, required this.product}) : super(key: key);
+  final Product product;
 
   @override
   Widget build(BuildContext context) {
-    return const Card();
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 6,
+                child: Text(
+                  product.name,
+                  style: const TextStyle(
+                      fontSize: 20,
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 4,
+                child: Text(
+                  "(${product.category})",
+                  style: TextStyle(
+                      fontSize: 10,
+                      color: BlueTheme.blueTint[800]
+                  ),
+                ),
+              )
+            ],
+          ),
+          Text(
+            "${product.price} francs",
+            style: const TextStyle(
+                color: Colors.redAccent,
+                fontSize: 25
+            )),
+          const Text(
+              'Notes',
+            style: TextStyle(
+              fontSize: 8
+            ),
+          ),
+
+          Text(product.details),
+        ],
+      ),
+    );
   }
 }

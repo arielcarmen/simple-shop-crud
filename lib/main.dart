@@ -2,7 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:m_ola/views/homescreen.dart';
-import 'package:m_ola/views/login.dart';
+import 'package:m_ola/utils/tools.dart';
+import 'package:m_ola/views/splash.dart';
 
 
 void main() async {
@@ -14,11 +15,11 @@ void main() async {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
-      primarySwatch: Colors.pink,
+      primarySwatch: BlueTheme.blueTint,
       primaryColor: Colors.pink[200],
       fontFamily: 'Poppins'
     ),
-    home: const HomeScreen(),
+    home: const SplashScreen(),
   ));
 }
 

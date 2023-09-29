@@ -150,6 +150,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                 });
                 final SharedPreferences prefs = await SharedPreferences.getInstance();
                 var isLoggedIn = prefs.setBool('logged', false);
+                var admin = prefs.setBool('admin', false);
                 Navigator.of(context)
                     .pushReplacement(MaterialPageRoute(builder: (context) => const LoginScreen()));
               },

@@ -45,6 +45,10 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
           if (user != null) {
             final SharedPreferences prefs = await SharedPreferences.getInstance();
             var isLoggedIn = prefs.setBool('logged', true);
+            var admin = prefs.setBool('admin', false);
+            if (user.email == 'makandjou3000@gmail.com'){
+              var admin = prefs.setBool('admin', true);
+            }
             Navigator.of(context).pop();
           }
         },

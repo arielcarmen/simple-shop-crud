@@ -18,7 +18,8 @@ class _HomeScreenState extends State<HomeScreen>{
   final CollectionReference _productsStream = FirebaseFirestore.instance.collection('articles');
   var productCount = 0;
   String productValue = "";
-  List<String> categories = ["Savons", "Sérums", "Accessoires", "Outils"];
+  List<String> categories = ["Gels","Savons", "Sérums", "Accessoires", "Outils", "Autres", "Soins visage",
+                              "Cheveux", "Couches", "Crêmes", "Maquillage","Pagnes", "Défrisants"];
 
   @override
   void initState() {
@@ -133,9 +134,12 @@ class _HomeScreenState extends State<HomeScreen>{
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
-                      child: Image(
-                        image: const AssetImage('assets/logos/logo_blanc.jpg'),
-                        width: MediaQuery.of(context).size.width*0.35,
+                      child: Hero(
+                        tag: 'splash-welcome',
+                        child: Image(
+                          image: const AssetImage('assets/logos/logo_blanc.jpg'),
+                          width: MediaQuery.of(context).size.width*0.35,
+                        ),
                       ),
                     ),
                   ),
@@ -206,17 +210,17 @@ class _HomeScreenState extends State<HomeScreen>{
     setState(() {
       _productsStream.count().get().then(
             (res) => productCount = res.count,
-        onError: (e) => print("Error completing: $e"),
+        onError: (e) => null,
       );
     });
   }
 
   List<Widget> _buildGridView(List categories){
-    List<Widget> _gridItems = [];
+    List<Widget> gridItems = [];
     for (String category in categories){
-      _gridItems.add(CustomMenuTile(title: category, pic: AssetImage("assets/icons/${category.toLowerCase()}.png")));
+      gridItems.add(CustomMenuTile(title: category, pic: AssetImage("assets/icons/${category.toLowerCase()}.png")));
     }
-    return _gridItems;
+    return gridItems;
   }
 }
 

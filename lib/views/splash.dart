@@ -8,32 +8,26 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
+class _SplashScreenState extends State<SplashScreen>{
 
   @override
   void initState() {
-    super.initState();
     toWelcomeScreen();
-    _controller = AnimationController(vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Center(
-          child: Hero(
+          child:
+          Hero(
             tag: 'splash-welcome',
             child: ClipRRect(
-              child: Image(
+              borderRadius: BorderRadius.circular(100),
+              child: const Image(
                 image: AssetImage("assets/logos/logo_blanc.png"),
                 height: 400,
               ),

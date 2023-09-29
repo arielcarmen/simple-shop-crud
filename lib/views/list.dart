@@ -17,11 +17,6 @@ class Products extends StatefulWidget {
 }
 
 class _ProductsState extends State<Products> {
-  final TextEditingController tName = TextEditingController();
-  final TextEditingController tPrice = TextEditingController();
-  final TextEditingController tDescription = TextEditingController();
-  final List<String> categories = ['Cheveux','Savons','Peau','Accessoires','À porter','Outils','Autres'];
-  String dropdownValue = 'Cheveux';
   var db = FirebaseFirestore.instance;
 
   Future<void> showDeleteDialog(BuildContext context, DocumentSnapshot document, String name) async{
@@ -110,10 +105,6 @@ class _ProductsState extends State<Products> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    tPrice.dispose();
-    tName.dispose();
-    tDescription.dispose();
     _searchController.removeListener(_onSearchChanged);
     _searchController.dispose();
     super.dispose();
@@ -178,7 +169,9 @@ class _ProductsState extends State<Products> {
                         }
                       },
                       onLongPress: (){
-                        showDeleteDialog(context, _productsList[index], _productsList[index]['name']);
+                        if (prefs.getBool("admin")!){
+                          showDeleteDialog(context, _productsList[index], _productsList[index]['name']);
+                        }
                       },
                       child: ListTile(
                         contentPadding: const EdgeInsets.symmetric(vertical: 5,horizontal: 15),

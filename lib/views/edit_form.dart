@@ -34,127 +34,129 @@ class _ProductEditFormState extends State<ProductEditForm> {
 
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            const Image(
-              image: AssetImage("assets/logos/logo_blanc.png"),
-              height: 200,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextFormField(
-                      controller: tName,
-                      validator: (value){
-                        return value!.isNotEmpty ? null : "Nom obligatoire";
-                      },
-                      keyboardType: TextInputType.text,
-                      decoration: const InputDecoration(
-                          labelText: ('Nouveau nom'),
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.blue,
-                                  width: 1
-                              )
-                          )
-                      ),
-                    ),
-                    const SizedBox(
-                      height: _separator,
-                    ),
-                    DropdownButtonFormField(
-                      value: dropdownValue,
-                      items: Constants.categories.map((category){
-                        return DropdownMenuItem(
-                          value: category,
-                          child: Text(category),
-                        );
-                      }).toList(),
-                      style: const TextStyle(fontSize: 15, color: Colors.black),
-                      isExpanded: true,
-                      borderRadius: BorderRadius.circular(5),
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  width: 1,
-                                  color: Colors.pink
-                              )
-                          )
-                      ),
-                      onChanged: (Object? newValue) {
-                        setState(() {
-                          dropdownValue = newValue!.toString();
-                        });
-                      },
-                    ),
-                    const SizedBox(
-                      height: _separator,
-                    ),
-                    TextFormField(
-                      controller: tPrice,
-                      validator: (value){
-                        return value!.isNotEmpty ? null : "Prix obligatoire";
-                      },
-                      keyboardType: TextInputType.number,
-                      maxLength: 8,
-                      decoration: const InputDecoration(
-                          suffixText: ('FCFA'),
-                          labelText: ('Nouveau prix'),
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.blue,
-                                  width: 1
-                              )
-                          )
-                      ),
-                    ),
-                    const SizedBox(
-                      height: _separator,
-                    ),
-                    TextFormField(
-                      controller: tDescription,
-                      maxLines: 4,
-                      minLines: 1,
-                      keyboardType: TextInputType.text,
-                      decoration: const InputDecoration(
-                          labelText: ('Details'),
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.blue,
-                                  width: 1
-                              )
-                          )
-                      ),
-                    ),
-                    const SizedBox(
-                      height: _separator,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        ElevatedButton(
-                          child: const Text('Modifier'),
-                          onPressed: () async {
-                            if( _formKey.currentState!.validate()){
-                              await editProduct(widget.documentId ,tName.text, tDescription.text, int.parse(tPrice.text), dropdownValue, "edited_by")
-                                  .then((value) => tName.clear())
-                                  .then((value) => tPrice.clear())
-                                  .then((value) => tDescription.clear())
-                                  .then((value) => setState);
-                            }
-                          },
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const Image(
+                image: AssetImage("assets/logos/logo_blanc.png"),
+                height: 200,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextFormField(
+                        controller: tName,
+                        validator: (value){
+                          return value!.isNotEmpty ? null : "Nom obligatoire";
+                        },
+                        keyboardType: TextInputType.text,
+                        decoration: const InputDecoration(
+                            labelText: ('Nouveau nom'),
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.blue,
+                                    width: 1
+                                )
+                            )
                         ),
-                      ],
-                    )
-                  ],
+                      ),
+                      const SizedBox(
+                        height: _separator,
+                      ),
+                      DropdownButtonFormField(
+                        value: dropdownValue,
+                        items: Constants.categories.map((category){
+                          return DropdownMenuItem(
+                            value: category,
+                            child: Text(category),
+                          );
+                        }).toList(),
+                        style: const TextStyle(fontSize: 15, color: Colors.black),
+                        isExpanded: true,
+                        borderRadius: BorderRadius.circular(5),
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 1,
+                                    color: Colors.pink
+                                )
+                            )
+                        ),
+                        onChanged: (Object? newValue) {
+                          setState(() {
+                            dropdownValue = newValue!.toString();
+                          });
+                        },
+                      ),
+                      const SizedBox(
+                        height: _separator,
+                      ),
+                      TextFormField(
+                        controller: tPrice,
+                        validator: (value){
+                          return value!.isNotEmpty ? null : "Prix obligatoire";
+                        },
+                        keyboardType: TextInputType.number,
+                        maxLength: 8,
+                        decoration: const InputDecoration(
+                            suffixText: ('FCFA'),
+                            labelText: ('Nouveau prix'),
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.blue,
+                                    width: 1
+                                )
+                            )
+                        ),
+                      ),
+                      const SizedBox(
+                        height: _separator,
+                      ),
+                      TextFormField(
+                        controller: tDescription,
+                        maxLines: 4,
+                        minLines: 1,
+                        keyboardType: TextInputType.text,
+                        decoration: const InputDecoration(
+                            labelText: ('Notes'),
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.blue,
+                                    width: 1
+                                )
+                            )
+                        ),
+                      ),
+                      const SizedBox(
+                        height: _separator,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ElevatedButton(
+                            child: const Text('Modifier'),
+                            onPressed: () async {
+                              if( _formKey.currentState!.validate()){
+                                await editProduct(widget.documentId ,tName.text, tDescription.text, int.parse(tPrice.text), dropdownValue, "edited_by")
+                                    .then((value) => tName.clear())
+                                    .then((value) => tPrice.clear())
+                                    .then((value) => tDescription.clear())
+                                    .then((value) => setState);
+                              }
+                            },
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

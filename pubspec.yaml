@@ -41,8 +41,6 @@ dependencies:
   firebase_auth: ^4.3.0
   google_sign_in: ^6.0.2
   shared_preferences: ^2.1.0
-  image_picker: ^1.0.4
-  flutter_fast_forms: ^12.0.0
 
 dev_dependencies:
   flutter_test:

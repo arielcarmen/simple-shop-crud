@@ -6,6 +6,7 @@ import 'package:m_ola/widgets/custom_menu_tile.dart';
 import 'details.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:m_ola/utils/tools.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -18,8 +19,8 @@ class _HomeScreenState extends State<HomeScreen>{
   final CollectionReference _productsStream = FirebaseFirestore.instance.collection('articles');
   var productCount = 0;
   String productValue = "";
-  List<String> categories = ["Gels","Savons", "Sérums", "Accessoires", "Outils", "Autres", "Soins visage",
-                              "Cheveux", "Couches", "Crêmes", "Maquillage","Pagnes", "Défrisants"];
+  // List<String> categories = ["Laits", "Huiles", "Défrisants","Savons","Gels", "Sérums", "Crêmes", "Douche",
+  //   "Soins visage", "Maquillage", "Cheveux", "Pagnes", "Couches","Accessoires","Outils", "Autres"];
 
   @override
   void initState() {
@@ -198,7 +199,7 @@ class _HomeScreenState extends State<HomeScreen>{
             child: GridView.count(
               physics: const BouncingScrollPhysics(),
               crossAxisCount: 3,
-              children: _buildGridView(categories)
+              children: _buildGridView(Constants.categories)
             ),
           )
         ],

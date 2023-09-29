@@ -6,6 +6,11 @@ Widget productImage(String url, String category){
       : Image.network(url, height: 30, width: 30,);
 }
 
+class Constants {
+  static const List<String> categories = ["Laits", "Huiles", "Défrisants","Savons","Gels", "Sérums", "Crêmes", "Douche",
+    "Soins visage", "Maquillage", "Cheveux", "Pagnes", "Couches","Accessoires","Outils", "Autres"];
+}
+
 class BlueTheme {
   static const MaterialColor blueTint = MaterialColor(
     0xffd1f3ec,

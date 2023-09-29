@@ -14,8 +14,6 @@ class ProductEditForm extends StatefulWidget {
 
 class _ProductEditFormState extends State<ProductEditForm> {
 
-  final List<String> categories = ["Gels","Savons", "Sérums", "Accessoires", "Outils",
-    "Cheveux", "Couches", "Crêmes"];
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   late final TextEditingController tName;
@@ -70,7 +68,7 @@ class _ProductEditFormState extends State<ProductEditForm> {
                     ),
                     DropdownButtonFormField(
                       value: dropdownValue,
-                      items: categories.map((category){
+                      items: Constants.categories.map((category){
                         return DropdownMenuItem(
                           value: category,
                           child: Text(category),
@@ -162,7 +160,7 @@ class _ProductEditFormState extends State<ProductEditForm> {
     );
   }
 
-  Future<void> editProduct(documentId, name, details, int price, category, edited_by) async {
+  Future<void> editProduct(documentId, name, details, int price, category, editedBy) async {
     _productsStream.doc(documentId)
         .update({"name": name, "details": details,"price": price,"category": category,"edited_by": "true",
     }).then((value) => ScaffoldMessenger.of(context).showSnackBar(

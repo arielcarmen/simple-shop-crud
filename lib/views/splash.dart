@@ -32,9 +32,11 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
         child: Center(
           child: Hero(
             tag: 'splash-welcome',
-            child: Image(
-              image: AssetImage("assets/logos/logo_blanc.png"),
-              height: 400,
+            child: ClipRRect(
+              child: Image(
+                image: AssetImage("assets/logos/logo_blanc.png"),
+                height: 400,
+              ),
             ),
           ),
         ),

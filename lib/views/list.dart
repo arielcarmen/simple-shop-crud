@@ -17,12 +17,11 @@ class Products extends StatefulWidget {
 }
 
 class _ProductsState extends State<Products> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController tName = TextEditingController();
   final TextEditingController tPrice = TextEditingController();
   final TextEditingController tDescription = TextEditingController();
   final List<String> categories = ['Cheveux','Savons','Peau','Accessoires','À porter','Outils','Autres'];
-  String dropdownvalue = 'Cheveux';
+  String dropdownValue = 'Cheveux';
   var db = FirebaseFirestore.instance;
 
   Future<void> showDeleteDialog(BuildContext context, DocumentSnapshot document, String name) async{
@@ -70,10 +69,11 @@ class _ProductsState extends State<Products> {
 
   final searchText = ValueNotifier<String>('');
 
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   List _productsList = [];
   List _allProducts = [];
+  late final SharedPreferences prefs;
 
   @override
   void initState() {
@@ -101,6 +101,7 @@ class _ProductsState extends State<Products> {
   }
 
   getAllProducts() async {
+    prefs = await SharedPreferences.getInstance();
     var data = await _productsStream.orderBy('name').get();
     setState(() {
       _productsList = data.docs;
@@ -166,41 +167,44 @@ class _ProductsState extends State<Products> {
                   padding: const EdgeInsets.only(top: 8),
                   child: Card(
                     margin: const EdgeInsets.fromLTRB(15, 6, 15, 0),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.symmetric(vertical: 5,horizontal: 15),
-                      onLongPress: () async{
-                        // final SharedPreferences prefs = await SharedPreferences.getInstance();
-                        // if (prefs.getBool("admin")!){
-                        //   Product sProduct = Product(_productsList[index]['name'], _productsList[index]['details'], _productsList[index]['price'],
-                        //       _productsList[index]['category'], _productsList[index]['url'], _productsList[index]['added_by'], _productsList[index]['edited_by']);
-                        //   Navigator.of(context).push(
-                        //       MaterialPageRoute(builder: (context) => ProductEditForm(documentId: _productsList[index].id,product: sProduct))
-                        //   );
-                        // }
+                    child: GestureDetector(
+                      onDoubleTap: (){
+                        if (prefs.getBool("admin")!){
+                          Product sProduct = Product(_productsList[index]['name'], _productsList[index]['details'], _productsList[index]['price'],
+                              _productsList[index]['category'], _productsList[index]['url'], _productsList[index]['added_by'], _productsList[index]['edited_by']);
+                          Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) => ProductEditForm(documentId: _productsList[index].id,product: sProduct))
+                          );
+                        }
+                      },
+                      onLongPress: (){
                         showDeleteDialog(context, _productsList[index], _productsList[index]['name']);
                       },
-                      onTap: (){
-                        Product sProduct = Product(_productsList[index]['name'], _productsList[index]['details'], _productsList[index]['price'], _productsList[index]['category'],
-                            _productsList[index]['url'], _productsList[index]['added_by'], _productsList[index]['edited_by']);
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context){
-                              return AlertDialog(
-                                content: ProductDetails(product: sProduct),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15)
-                                ),
-                              );
-                            }
-                        );
-                      },
-                      leading: ClipRRect(
-                        borderRadius: BorderRadius.circular(0),
-                        child: productImage(_productsList[index]['url'],_productsList[index]['category']),
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.symmetric(vertical: 5,horizontal: 15),
+                        onTap: (){
+                          Product sProduct = Product(_productsList[index]['name'], _productsList[index]['details'], _productsList[index]['price'], _productsList[index]['category'],
+                              _productsList[index]['url'], _productsList[index]['added_by'], _productsList[index]['edited_by']);
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context){
+                                return AlertDialog(
+                                  content: ProductDetails(product: sProduct),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15)
+                                  ),
+                                );
+                              }
+                          );
+                        },
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(0),
+                          child: productImage(_productsList[index]['url'],_productsList[index]['category']),
+                        ),
+                        trailing: Text('${_productsList[index]['price']}'),
+                        title: Text(_productsList[index]['name']),
+                        subtitle: Text('${_productsList[index]['category']}'),
                       ),
-                      trailing: Text('${_productsList[index]['price']}'),
-                      title: Text(_productsList[index]['name']),
-                      subtitle: Text('${_productsList[index]['category']}'),
                     ),
                   ),
                 );

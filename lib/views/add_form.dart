@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../models/product.dart';
+import '../utils/tools.dart';
 
 class AddForm extends StatefulWidget {
   const AddForm({Key? key}) : super(key: key);
@@ -25,12 +26,8 @@ class _AddFormState extends State<AddForm> {
   final TextEditingController tName = TextEditingController();
   final TextEditingController tPrice = TextEditingController();
   final TextEditingController tDescription = TextEditingController();
-  final List<String> categories = ["Gels","Savons", "Sérums", "Accessoires", "Outils",
-    "Cheveux", "Couches", "Crêmes"];
-
   var db = FirebaseFirestore.instance;
-  final CollectionReference _productsStream = FirebaseFirestore.instance.collection('articles');
-  String dropdownvalue = 'Savons';
+  String dropdownValue = 'Laits';
 
   static const double _separator = 15.0;
 
@@ -52,11 +49,11 @@ class _AddFormState extends State<AddForm> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     DropdownButtonFormField(
-                      value: dropdownvalue,
-                      items: categories.map((category){
+                      value: dropdownValue,
+                      items: Constants.categories.map((category){
                         return DropdownMenuItem(
                           value: category,
-                          child: Text('$category'),
+                          child: Text(category),
                         );
                       }).toList(),
                       style: const TextStyle(fontSize: 15, color: Colors.black),
@@ -72,7 +69,7 @@ class _AddFormState extends State<AddForm> {
                       ),
                       onChanged: (Object? newValue) {
                         setState(() {
-                          dropdownvalue = newValue!.toString();
+                          dropdownValue = newValue!.toString();
                         });
                       },
                     ),
@@ -142,7 +139,7 @@ class _AddFormState extends State<AddForm> {
                           child: const Text('Ajouter'),
                           onPressed: () async {
                             if( _formKey.currentState!.validate()){
-                              await addProduct(tName.text, tDescription.text, int.parse(tPrice.text), "url", dropdownvalue, "added_by", "edited_by")
+                              await addProduct(tName.text, tDescription.text, int.parse(tPrice.text), "url", dropdownValue, "added_by", "edited_by")
                                   .then((value) => tName.clear())
                                   .then((value) => tPrice.clear())
                                   .then((value) => tDescription.clear())
@@ -172,8 +169,8 @@ class _AddFormState extends State<AddForm> {
     );
   }
 
-  Future<void> addProduct(name, details, price, url, category, added_by, edited_by) async {
-    final Product article = Product(name, details, price, category, url, added_by, edited_by);
+  Future<void> addProduct(name, details, price, url, category, addedBy, editedBy) async {
+    final Product article = Product(name, details, price, category, url, addedBy, editedBy);
     db.collection('articles')
         .add(article.toMap())
         .then((value) => ScaffoldMessenger.of(context).showSnackBar(

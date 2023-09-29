@@ -20,9 +20,9 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
 
   Route _routeToHomeScreen() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => LoginScreen(),
+      pageBuilder: (context, animation, secondaryAnimation) => const LoginScreen(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        var begin = Offset(-1.0, 0.0);
+        var begin = const Offset(-1.0, 0.0);
         var end = Offset.zero;
         var curve = Curves.ease;
 
@@ -91,15 +91,15 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 16.0),
-            Text(
+            const SizedBox(height: 16.0),
+            const Text(
               'Hello',
               style: TextStyle(
                 color: Colors.grey,
                 fontSize: 26,
               ),
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             Text(
               _user.displayName!,
               style: TextStyle(
@@ -107,7 +107,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                 fontSize: 26,
               ),
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             Text(
               _user.email!,
               style: TextStyle(
@@ -116,7 +116,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                 letterSpacing: 0.5,
               ),
             ),
-            SizedBox(height: 24.0),
+            const SizedBox(height: 24.0),
             Text(
               '.',
               style: TextStyle(
@@ -124,7 +124,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                   fontSize: 14,
                   letterSpacing: 0.2),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             _isSigningOut
                 ? const CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),

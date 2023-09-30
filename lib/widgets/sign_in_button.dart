@@ -1,9 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:m_ola/views/homescreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../main.dart';
 import '../utils/authentication.dart';
 
 class GoogleSignInButton extends StatefulWidget {
@@ -13,7 +12,20 @@ class GoogleSignInButton extends StatefulWidget {
 
 class _GoogleSignInButtonState extends State<GoogleSignInButton> {
   bool _isSigningIn = false;
+  late List<dynamic> admins = [];
 
+  @override
+  void initState() {
+    getAdminList();
+    super.initState();
+  }
+
+  getAdminList() async {
+    DocumentSnapshot callToAdminList = await FirebaseFirestore.instance.collection('admins').doc("admins").get();
+    setState(() {
+      admins = callToAdminList["liste"];
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -39,14 +51,13 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
           await Authentication.signInWithGoogle(context: context);
           setState(() {
             _isSigningIn = false;
-            
           });
 
           if (user != null) {
             final SharedPreferences prefs = await SharedPreferences.getInstance();
             var isLoggedIn = prefs.setBool('logged', true);
             var admin = prefs.setBool('admin', false);
-            if (user.email == 'makandjou3000@gmail.com'){
+            if (admins.contains(user.email)){
               var admin = prefs.setBool('admin', true);
             }
             Navigator.of(context).pop();

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:m_ola/models/product.dart';
 import 'package:m_ola/utils/tools.dart';
@@ -14,11 +15,12 @@ class ProductEditForm extends StatefulWidget {
 
 class _ProductEditFormState extends State<ProductEditForm> {
 
+  late User _user;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  late final TextEditingController tName;
-  late final TextEditingController tPrice;
-  late final TextEditingController tDescription;
+  late final TextEditingController tName = TextEditingController(text: widget.product.name);
+  late final TextEditingController tPrice = TextEditingController(text: widget.product.price.toString());
+  late final TextEditingController tDescription = TextEditingController(text: widget.product.details);
   String dropdownValue = "";
 
   static const double _separator = 15.0;
@@ -26,12 +28,22 @@ class _ProductEditFormState extends State<ProductEditForm> {
   final CollectionReference _productsStream = FirebaseFirestore.instance.collection('articles');
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    _user = getLoggedInUser();
     dropdownValue = widget.product.category;
-    tName = TextEditingController(text: widget.product.name);
-    tPrice = TextEditingController(text: widget.product.price.toString());
-    tDescription = TextEditingController(text: widget.product.details);
+    super.initState();
+  }
 
+  @override
+  void dispose() {
+    tName.dispose();
+    tDescription.dispose();
+    tPrice.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -48,25 +60,6 @@ class _ProductEditFormState extends State<ProductEditForm> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      TextFormField(
-                        controller: tName,
-                        validator: (value){
-                          return value!.isNotEmpty ? null : "Nom obligatoire";
-                        },
-                        keyboardType: TextInputType.text,
-                        decoration: const InputDecoration(
-                            labelText: ('Nouveau nom'),
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.blue,
-                                    width: 1
-                                )
-                            )
-                        ),
-                      ),
-                      const SizedBox(
-                        height: _separator,
-                      ),
                       DropdownButtonFormField(
                         value: dropdownValue,
                         items: Constants.categories.map((category){
@@ -96,6 +89,25 @@ class _ProductEditFormState extends State<ProductEditForm> {
                         height: _separator,
                       ),
                       TextFormField(
+                        controller: tName,
+                        validator: (value){
+                          return value!.isNotEmpty ? null : "Nom obligatoire";
+                        },
+                        keyboardType: TextInputType.text,
+                        decoration: const InputDecoration(
+                            labelText: ('Nouveau nom'),
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.blue,
+                                    width: 1
+                                )
+                            )
+                        ),
+                      ),
+                      const SizedBox(
+                        height: _separator,
+                      ),
+                      TextFormField(
                         controller: tPrice,
                         validator: (value){
                           return value!.isNotEmpty ? null : "Prix obligatoire";
@@ -104,7 +116,7 @@ class _ProductEditFormState extends State<ProductEditForm> {
                         maxLength: 8,
                         decoration: const InputDecoration(
                             suffixText: ('FCFA'),
-                            labelText: ('Nouveau prix'),
+                            labelText: ('Nouveau prix unitaire'),
                             border: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Colors.blue,
@@ -141,7 +153,7 @@ class _ProductEditFormState extends State<ProductEditForm> {
                             child: const Text('Modifier'),
                             onPressed: () async {
                               if( _formKey.currentState!.validate()){
-                                await editProduct(widget.documentId ,tName.text, tDescription.text, int.parse(tPrice.text), dropdownValue, "edited_by")
+                                await editProduct(widget.documentId ,tName.text, tDescription.text, int.parse(tPrice.text), dropdownValue, _user.displayName)
                                     .then((value) => tName.clear())
                                     .then((value) => tPrice.clear())
                                     .then((value) => tDescription.clear())
@@ -164,7 +176,7 @@ class _ProductEditFormState extends State<ProductEditForm> {
 
   Future<void> editProduct(documentId, name, details, int price, category, editedBy) async {
     _productsStream.doc(documentId)
-        .update({"name": name, "details": details,"price": price,"category": category,"edited_by": "true",
+        .update({"name": name, "details": details,"price": price,"category": category,"edited_by": editedBy,
     }).then((value) => ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('$name modifié !')))).onError((error, stackTrace) => ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Erreur')))).then((value) => Navigator.of(context).pop());

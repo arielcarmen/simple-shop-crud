@@ -19,11 +19,10 @@ class _HomeScreenState extends State<HomeScreen>{
   final CollectionReference _productsStream = FirebaseFirestore.instance.collection('articles');
   var productCount = 0;
   String productValue = "";
-  // List<String> categories = ["Laits", "Huiles", "Défrisants","Savons","Gels", "Sérums", "Crêmes", "Douche",
-  //   "Soins visage", "Maquillage", "Cheveux", "Pagnes", "Couches","Accessoires","Outils", "Autres"];
 
   @override
   void initState() {
+    _updateProductsNumber();
     _productsStream.snapshots().listen((event) {
       _updateProductsNumber();
     });
@@ -54,18 +53,25 @@ class _HomeScreenState extends State<HomeScreen>{
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Welcome'),
+        title: const Text('Welcome !'),
         actions: [
           IconButton(
             onPressed: () async {
               final FirebaseAuth auth = FirebaseAuth.instance;
               final SharedPreferences prefs = await SharedPreferences.getInstance();
-              bool isLoggedIn = prefs.getBool('logged')!;
-              Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (context) => isLoggedIn ? UserInfoScreen(user: auth.currentUser!) : const LoginScreen()
-                  )
-              );
+              if (prefs.containsKey("logged")){
+                bool isLoggedIn = prefs.getBool('logged')!;
+                Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => (isLoggedIn) ? UserInfoScreen(user: auth.currentUser!) : const LoginScreen()
+                    )
+                );
+              } else {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const LoginScreen()
+                )
+                );
+              }
             },
             icon: const Icon(
                 Icons.person
@@ -100,8 +106,6 @@ class _HomeScreenState extends State<HomeScreen>{
                       child: Padding(
                         padding: const EdgeInsets.all(10),
                         child: Column(
-                          // mainAxisSize: MainAxisSize.max,
-                          // crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(
                               height: 40,
@@ -135,12 +139,9 @@ class _HomeScreenState extends State<HomeScreen>{
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
-                      child: Hero(
-                        tag: 'splash-welcome',
-                        child: Image(
-                          image: const AssetImage('assets/logos/logo_blanc.jpg'),
-                          width: MediaQuery.of(context).size.width*0.35,
-                        ),
+                      child: Image(
+                        image: const AssetImage('assets/logos/logo_blanc.jpg'),
+                        width: MediaQuery.of(context).size.width*0.35,
                       ),
                     ),
                   ),

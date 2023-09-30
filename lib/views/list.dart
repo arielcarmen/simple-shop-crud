@@ -19,47 +19,6 @@ class Products extends StatefulWidget {
 class _ProductsState extends State<Products> {
   var db = FirebaseFirestore.instance;
 
-  Future<void> showDeleteDialog(BuildContext context, DocumentSnapshot document, String name) async{
-    return await showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (context){
-          return StatefulBuilder(
-              builder: (context, setState) {
-                return AlertDialog(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)
-                  ),
-                  title: const Text('Confirmation'),
-                  content: const Text('Voulez vous supprimer cet article ?'),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        db.collection("articles").doc(document.id).delete().then((value) => Navigator.of(context).pop())
-                            .then(
-                              (value) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$name supprimé'))),
-                          onError: (e) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$e error'))),
-                        );
-                      },
-                      child: Container(
-                        color: Colors.white,
-                        padding: const EdgeInsets.all(14),
-                        child: const Text(
-                          "Supprimer",
-                          style: TextStyle(
-                              color: Colors.red
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              }
-          );
-        }
-    );
-  }
-
   final CollectionReference _productsStream = FirebaseFirestore.instance.collection('articles');
 
   final searchText = ValueNotifier<String>('');
@@ -152,6 +111,8 @@ class _ProductsState extends State<Products> {
             // _productsList = _allProducts;
             return
               ListView.builder(
+                padding: const EdgeInsets.only(bottom: 20),
+                physics: const BouncingScrollPhysics(),
               itemCount: _productsList.length,
               itemBuilder: (context, index){
                 return Padding(
@@ -159,20 +120,6 @@ class _ProductsState extends State<Products> {
                   child: Card(
                     margin: const EdgeInsets.fromLTRB(15, 6, 15, 0),
                     child: GestureDetector(
-                      onDoubleTap: (){
-                        if (prefs.getBool("admin")!){
-                          Product sProduct = Product(_productsList[index]['name'], _productsList[index]['details'], _productsList[index]['price'],
-                              _productsList[index]['category'], _productsList[index]['url'], _productsList[index]['added_by'], _productsList[index]['edited_by']);
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) => ProductEditForm(documentId: _productsList[index].id,product: sProduct))
-                          );
-                        }
-                      },
-                      onLongPress: (){
-                        if (prefs.getBool("admin")!){
-                          showDeleteDialog(context, _productsList[index], _productsList[index]['name']);
-                        }
-                      },
                       child: ListTile(
                         contentPadding: const EdgeInsets.symmetric(vertical: 5,horizontal: 15),
                         onTap: (){
@@ -256,18 +203,7 @@ class _ProductsState extends State<Products> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          // await showAddDialog(context);
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const AddForm())
-          );
-        },
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16)
-        ),
-        child: const Icon(Icons.add_rounded),
-      ),
+
     );
   }
 

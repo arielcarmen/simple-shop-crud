@@ -22,20 +22,20 @@ class ProductDetails extends StatelessWidget {
                 child: Text(
                   product.name,
                   style: const TextStyle(
-                      fontSize: 20,
+                      fontSize: 18,
                   ),
                 ),
               ),
-              Expanded(
-                flex: 4,
-                child: Text(
-                  "(${product.category})",
-                  style: TextStyle(
-                      fontSize: 10,
-                      color: BlueTheme.blueTint[800]
-                  ),
-                ),
-              )
+              // Expanded(
+              //   flex: 4,
+              //   child: Text(
+              //     "(${product.category})",
+              //     style: TextStyle(
+              //         fontSize: 10,
+              //         color: BlueTheme.blueTint[800]
+              //     ),
+              //   ),
+              // )
             ],
           ),
           Text(
@@ -52,6 +52,27 @@ class ProductDetails extends StatelessWidget {
           ),
 
           Text(product.details),
+          const SizedBox(
+            height: 5,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Ajouté par:',
+                style: TextStyle(
+                    fontSize: 8
+                ),
+              ),
+              Text(
+                product.added_by,
+                style: const TextStyle(
+                    fontSize: 8,
+                  color: Colors.red
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );

@@ -1,20 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../models/product.dart';
 import '../utils/tools.dart';
 
 class AddForm extends StatefulWidget {
-  const AddForm({Key? key}) : super(key: key);
+  const AddForm({Key? key, required this.category}) : super(key: key);
+  final String category;
 
   @override
   State<AddForm> createState() => _AddFormState();
 }
 
 class _AddFormState extends State<AddForm> {
+  late User _user;
+  @override
+  void initState() {
+    _user = getLoggedInUser();
+    super.initState();
+  }
   @override
   void dispose() {
-    // TODO: implement dispose
     tPrice.dispose();
     tName.dispose();
     tDescription.dispose();
@@ -49,34 +56,34 @@ class _AddFormState extends State<AddForm> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      DropdownButtonFormField(
-                        value: dropdownValue,
-                        items: Constants.categories.map((category){
-                          return DropdownMenuItem(
-                            value: category,
-                            child: Text(category),
-                          );
-                        }).toList(),
-                        style: const TextStyle(fontSize: 15, color: Colors.black),
-                        isExpanded: true,
-                        borderRadius: BorderRadius.circular(5),
-                        decoration: const InputDecoration(
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 1,
-                                    color: Colors.pink
-                                )
-                            )
-                        ),
-                        onChanged: (Object? newValue) {
-                          setState(() {
-                            dropdownValue = newValue!.toString();
-                          });
-                        },
-                      ),
-                      const SizedBox(
-                        height: _separator,
-                      ),
+                      // DropdownButtonFormField(
+                      //   value: dropdownValue,
+                      //   items: Constants.categories.map((category){
+                      //     return DropdownMenuItem(
+                      //       value: category,
+                      //       child: Text(category),
+                      //     );
+                      //   }).toList(),
+                      //   style: const TextStyle(fontSize: 15, color: Colors.black),
+                      //   isExpanded: true,
+                      //   borderRadius: BorderRadius.circular(5),
+                      //   decoration: const InputDecoration(
+                      //       border: OutlineInputBorder(
+                      //           borderSide: BorderSide(
+                      //               width: 1,
+                      //               color: Colors.pink
+                      //           )
+                      //       )
+                      //   ),
+                      //   onChanged: (Object? newValue) {
+                      //     setState(() {
+                      //       dropdownValue = newValue!.toString();
+                      //     });
+                      //   },
+                      // ),
+                      // const SizedBox(
+                      //   height: _separator,
+                      // ),
                       TextFormField(
                         controller: tName,
                         validator: (value){
@@ -140,7 +147,7 @@ class _AddFormState extends State<AddForm> {
                             child: const Text('Ajouter'),
                             onPressed: () async {
                               if( _formKey.currentState!.validate()){
-                                await addProduct(tName.text, tDescription.text, int.parse(tPrice.text), "url", dropdownValue, "added_by", "edited_by")
+                                await addProduct(tName.text, tDescription.text, int.parse(tPrice.text), "url", widget.category, _user.displayName, "no one")
                                     .then((value) => tName.clear())
                                     .then((value) => tPrice.clear())
                                     .then((value) => tDescription.clear())

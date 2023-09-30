@@ -4,8 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:m_ola/models/product.dart';
 import 'package:flutter/material.dart';
 import 'package:m_ola/utils/tools.dart';
-import 'package:m_ola/views/add_form.dart';
-import 'package:m_ola/views/edit_form.dart';
 import 'package:m_ola/widgets/show_product_details.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,8 +18,6 @@ class _ProductsState extends State<Products> {
   var db = FirebaseFirestore.instance;
 
   final CollectionReference _productsStream = FirebaseFirestore.instance.collection('articles');
-
-  final searchText = ValueNotifier<String>('');
 
   final TextEditingController _searchController = TextEditingController();
 
@@ -150,54 +146,6 @@ class _ProductsState extends State<Products> {
                 );
               },
             );
-
-            //   ListView(
-            //   children: snapshot.data!.docs
-            //       .map( (DocumentSnapshot document) {
-            //     Map<String, dynamic> data =
-            //     document.data()! as Map<String, dynamic>;
-            //     return Padding(
-            //       padding: const EdgeInsets.only(top: 8),
-            //       child: Card(
-            //         margin: const EdgeInsets.fromLTRB(15, 6, 15, 0),
-            //         child: ListTile(
-            //           contentPadding: const EdgeInsets.symmetric(vertical: 5,horizontal: 15),
-            //           onLongPress: () async{
-            //             final SharedPreferences prefs = await SharedPreferences.getInstance();
-            //             if (prefs.getBool("admin")!){
-            //               Product sProduct = Product(data['name'], data['details'], data['price'], data['category'], data['url'], data['added_by'], data['edited_by']);
-            //               Navigator.of(context).push(
-            //                   MaterialPageRoute(builder: (context) => ProductEditForm(documentId: document.id,product: sProduct))
-            //               );
-            //             }
-            //             // showDeleteDialog(context, document, data['name']);
-            //           },
-            //           onTap: (){
-            //             Product sProduct = Product(data['name'], data['details'], data['price'], data['category'], data['url'], data['added_by'], data['edited_by']);
-            //             showDialog(
-            //                 context: context,
-            //                 builder: (BuildContext context){
-            //                   return AlertDialog(
-            //                     content: ProductDetails(product: sProduct),
-            //                     shape: RoundedRectangleBorder(
-            //                         borderRadius: BorderRadius.circular(15)
-            //                     ),
-            //                   );
-            //                 }
-            //             );
-            //           },
-            //           leading: ClipRRect(
-            //             borderRadius: BorderRadius.circular(0),
-            //             child: productImage(data['url'],data['category']),
-            //           ),
-            //           trailing: Text('${data['price']}'),
-            //           title: Text(data['name']),
-            //           subtitle: Text('${data['category']}'),
-            //         ),
-            //       ),
-            //     );
-            //   }).toList().cast(),
-            // );
           } else {
             return const Center(child: Text("Une erreur s'est produite"));
           }

@@ -18,11 +18,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>{
   final CollectionReference _productsStream = FirebaseFirestore.instance.collection('articles');
   var productCount = 0;
-  String productValue = "";
 
   @override
   void initState() {
-    _updateProductsNumber();
     _productsStream.snapshots().listen((event) {
       _updateProductsNumber();
     });
@@ -49,7 +47,6 @@ class _HomeScreenState extends State<HomeScreen>{
   // }
   @override
   Widget build(BuildContext context) {
-    productValue =  productCount.toString();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -139,9 +136,14 @@ class _HomeScreenState extends State<HomeScreen>{
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
-                      child: Image(
-                        image: const AssetImage('assets/logos/logo_blanc.jpg'),
-                        width: MediaQuery.of(context).size.width*0.35,
+                      child: GestureDetector(
+                        onTap: (){
+                          print(productCount);
+                        },
+                        child: Image(
+                          image: const AssetImage('assets/logos/logo_blanc.jpg'),
+                          width: MediaQuery.of(context).size.width*0.35,
+                        ),
                       ),
                     ),
                   ),
@@ -208,13 +210,21 @@ class _HomeScreenState extends State<HomeScreen>{
     );
   }
 
-  void _updateProductsNumber(){
+  _updateProductsNumber(){
+    _productsStream.count().get() .then(
+          (res) => setArticlesNum(res.count),
+      onError: (e) => null,
+    );
+  }
+
+  setArticlesNum(int val){
     setState(() {
-      _productsStream.count().get().then(
-            (res) => productCount = res.count,
-        onError: (e) => null,
-      );
+      productCount = val;
     });
+  }
+  aaa(){
+    var aa = _productsStream.count().get();
+    print(aa);
   }
 
   List<Widget> _buildGridView(List categories){

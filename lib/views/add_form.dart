@@ -81,9 +81,10 @@ class _AddFormState extends State<AddForm> {
                       //     });
                       //   },
                       // ),
-                      // const SizedBox(
-                      //   height: _separator,
-                      // ),
+                      Text('Ajouter dans : ${widget.category} '),
+                      const SizedBox(
+                        height: _separator,
+                      ),
                       TextFormField(
                         controller: tName,
                         validator: (value){

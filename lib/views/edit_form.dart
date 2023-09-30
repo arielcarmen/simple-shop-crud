@@ -60,6 +60,10 @@ class _ProductEditFormState extends State<ProductEditForm> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      Text('Modifier : ${widget.product.name} '),
+                      const SizedBox(
+                        height: _separator,
+                      ),
                       DropdownButtonFormField(
                         value: dropdownValue,
                         items: Constants.categories.map((category){

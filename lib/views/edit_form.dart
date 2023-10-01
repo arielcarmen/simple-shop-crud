@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:m_ola/models/product.dart';
 import 'package:m_ola/utils/tools.dart';
 
@@ -97,7 +98,7 @@ class _ProductEditFormState extends State<ProductEditForm> {
                         validator: (value){
                           return value!.isNotEmpty ? null : "Nom obligatoire";
                         },
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.name,
                         decoration: const InputDecoration(
                             labelText: ('Nouveau nom'),
                             border: OutlineInputBorder(
@@ -179,12 +180,14 @@ class _ProductEditFormState extends State<ProductEditForm> {
   }
 
   Future<void> editProduct(documentId, name, details, int price, category, editedBy) async {
+    if(details == ""){
+      details = "Aucune note";
+    }
     _productsStream.doc(documentId)
         .update({"name": name, "details": details,"price": price,"category": category,"edited_by": editedBy,
     }).then((value) => ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('$name modifié !')))).onError((error, stackTrace) => ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('$name modifié !'), duration: Duration(milliseconds: 800),))).onError((error, stackTrace) => ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Erreur')))).then((value) => Navigator.of(context).pop());
   }
 }
-
 

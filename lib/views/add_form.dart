@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../models/product.dart';
 import '../utils/tools.dart';
@@ -87,10 +88,13 @@ class _AddFormState extends State<AddForm> {
                       ),
                       TextFormField(
                         controller: tName,
+                        inputFormatters: <TextInputFormatter>[
+                          UpperCaseTextFormatter()
+                        ],
                         validator: (value){
                           return value!.isNotEmpty ? null : "Nom obligatoire";
                         },
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.name,
                         decoration: const InputDecoration(
                             labelText: ('Nom'),
                             border: OutlineInputBorder(
@@ -180,14 +184,33 @@ class _AddFormState extends State<AddForm> {
   }
 
   Future<void> addProduct(name, details, price, url, category, addedBy, editedBy) async {
+    if(details == ""){
+      details = "Aucune note";
+    }
     final Product article = Product(name, details, price, category, url, addedBy, editedBy);
     db.collection('articles')
         .add(article.toMap())
         .then((value) => ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${article.name} ajouté !'))))
+        SnackBar(content: Text('${article.name} ajouté !'), duration: Duration(milliseconds: 800),)))
         .then((value) => tName.clear())
         .then((value) => tPrice.clear())
         .then((value) => tDescription.clear()).onError((error, stackTrace) => ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Erreur'))));
   }
 }
+
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    return TextEditingValue(
+      text: capitalize(newValue.text),
+      selection: newValue.selection,
+    );
+  }
+}
+
+String capitalize(String value) {
+  if(value.trim().isEmpty) return "";
+  return "${value[0].toUpperCase()}${value.substring(1).toLowerCase()}";
+}
+

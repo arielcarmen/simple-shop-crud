@@ -70,6 +70,7 @@ class _ProductsState extends State<Products> {
     return Scaffold(
       appBar: AppBar(
         title: CupertinoSearchTextField(
+          placeholder: 'Rechercher',
           controller: _searchController,
           backgroundColor: Colors.white,
         )

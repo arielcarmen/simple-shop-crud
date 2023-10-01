@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen>{
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Welcome !'),
+        title: const Text('Bienvenue !'),
         actions: [
           IconButton(
             onPressed: () async {
@@ -133,6 +133,7 @@ class _HomeScreenState extends State<HomeScreen>{
                     decoration: BoxDecoration(
                       border: Border.all(),
                       borderRadius: BorderRadius.circular(100),
+                      color: Themes.pinkTint[20]
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
@@ -141,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen>{
                           print(productCount);
                         },
                         child: Image(
-                          image: const AssetImage('assets/logos/logo_blanc.jpg'),
+                          image: const AssetImage('assets/logos/logo_blanc_full.png'),
                           width: MediaQuery.of(context).size.width*0.35,
                         ),
                       ),

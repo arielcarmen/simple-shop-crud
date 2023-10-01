@@ -113,12 +113,11 @@ class _ProductListState extends State<ProductList> {
                           );
                         },
                         trailing: Text(
-                            '${data['price']}',
+                            '${data['price']}f',
                           style: const TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.w300,
-                            color: Colors.redAccent
-                          ),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600
+                        ),
                         ),
                         title: Text(data['name']),
                       ),

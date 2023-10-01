@@ -137,7 +137,13 @@ class _ProductsState extends State<Products> {
                           borderRadius: BorderRadius.circular(0),
                           child: productImage(_productsList[index]['url'],_productsList[index]['category']),
                         ),
-                        trailing: Text('${_productsList[index]['price']}'),
+                        trailing: Text(
+                            '${_productsList[index]['price']}f',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600
+                          ),
+                        ),
                         title: Text(_productsList[index]['name']),
                         subtitle: Text('${_productsList[index]['category']}'),
                       ),

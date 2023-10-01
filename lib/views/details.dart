@@ -57,35 +57,32 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
         title: const Text("Mon compte"),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(
-          top: 20.0,
-          left: 16.0,
-          right: 16.0,
-          bottom: 20.0,
-        ),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _user.photoURL != null
-                ? ClipOval(
-              child: Material(
-                color: Colors.grey[300],
-                child: Image.network(
-                  _user.photoURL!,
-                  fit: BoxFit.fitHeight,
+            if (_user.photoURL != null) Container(
+              height: MediaQuery.of(context).size.width*0.25,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(100),
+                child: FadeInImage.assetNetwork(
+                  placeholder: 'assets/logos/logo_blanc_full.png',
+                  image: _user.photoURL!,
+                  // fit: BoxFit.fitHeight,
                 ),
               ),
-            )
-                : ClipOval(
-              child: Material(
-                color: Colors.grey[300],
+            ) else Container(
+              height: MediaQuery.of(context).size.width*0.25,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(100),
                 child: const Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Image(
-                    fit: BoxFit.fitHeight,
+                    // fit: BoxFit.fitHeight,
                     image: AssetImage(
-                        "assets/logos/logo_blanc.png"
+                        "assets/logos/logo_blanc_full.png"
                     ),
                   ),
                 ),
@@ -125,11 +122,9 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                   letterSpacing: 0.2),
             ),
             const SizedBox(height: 16.0),
-            _isSigningOut
-                ? const CircularProgressIndicator(
+            if (_isSigningOut) const CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-            )
-                : ElevatedButton(
+            ) else ElevatedButton(
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(
                   Colors.redAccent,
@@ -162,7 +157,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
-                    letterSpacing: 2,
+                    letterSpacing: 1.5,
                   ),
                 ),
               ),

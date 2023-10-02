@@ -19,11 +19,17 @@ class ProductDetails extends StatelessWidget {
             children: [
               Expanded(
                 flex: 6,
-                child: Text(
-                  product.name,
-                  style: const TextStyle(
-                      fontSize: 18,
-                  ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      product.name,
+                      style: const TextStyle(
+                          fontSize: 18,
+                      ),
+                    ),
+                    product.available ? Icon(Icons.check, color: Colors.green) : Icon(Icons.clear_outlined, color: Colors.red)
+                  ],
                 ),
               ),
               // Expanded(
@@ -41,7 +47,6 @@ class ProductDetails extends StatelessWidget {
           Text(
             "${product.price} francs",
             style: const TextStyle(
-                color: Colors.redAccent,
                 fontSize: 25
             )),
           const Text(

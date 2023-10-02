@@ -4,6 +4,8 @@ import 'package:m_ola/views/login.dart';
 import 'package:m_ola/utils/authentication.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../utils/tools.dart';
+
 
 class UserInfoScreen extends StatefulWidget {
   const UserInfoScreen({Key? key, required User user}) : _user = user,super(key: key);
@@ -111,7 +113,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
               child: Text(
                 _user.email!,
                 style: TextStyle(
-                  color: Colors.orange[600],
+                  color: Themes.pinkTint[200],
                   fontSize: 20,
                   letterSpacing: 0.5,
                 ),
@@ -131,7 +133,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
             ) else ElevatedButton(
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(
-                  Colors.redAccent,
+                  Colors.red,
                 ),
                 shape: MaterialStateProperty.all(
                   RoundedRectangleBorder(

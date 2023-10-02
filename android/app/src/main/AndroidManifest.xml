@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.near.mola.m_ola">
    <application
-        android:label="Stocks"
+        android:label="M-Ola"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

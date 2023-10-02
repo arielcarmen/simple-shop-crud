@@ -121,7 +121,7 @@ class _ProductsState extends State<Products> {
                         contentPadding: const EdgeInsets.symmetric(vertical: 5,horizontal: 15),
                         onTap: (){
                           Product sProduct = Product(_productsList[index]['name'], _productsList[index]['details'], _productsList[index]['price'], _productsList[index]['category'],
-                              _productsList[index]['url'], _productsList[index]['added_by'], _productsList[index]['edited_by']);
+                              _productsList[index]['url'], _productsList[index]['added_by'], _productsList[index]['edited_by'], _productsList[index]['available']);
                           showDialog(
                               context: context,
                               builder: (BuildContext context){

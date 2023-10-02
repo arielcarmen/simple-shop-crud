@@ -9,7 +9,8 @@ class Product{
   late String category;
   late String added_by;
   late String edited_by;
-  Product(this.name, this.details, this.price, this.category, this.url, this.added_by, this.edited_by);
+  late bool available;
+  Product(this.name, this.details, this.price, this.category, this.url, this.added_by, this.edited_by, this.available);
 
   Map<String, dynamic> toMap() {
     return {
@@ -18,6 +19,7 @@ class Product{
       'details': details,
       'url': url,
       'category': category,
+      'available': available,
       'added_by': added_by,
       'edited_by': edited_by,
     };
@@ -26,7 +28,7 @@ class Product{
   final CollectionReference articles = FirebaseFirestore.instance.collection("articles");
 
   factory Product.fromDocumentSnapshot({required DocumentSnapshot<Map<String,dynamic>> doc}){
-    return Product(doc.data()!["name"],doc.data()!["details"],doc.data()!["price"],doc.data()!["url"],doc.data()!["category"],doc.data()!["added_by"],doc.data()!["edited_by"]);
+    return Product(doc.data()!["name"],doc.data()!["details"],doc.data()!["price"],doc.data()!["url"],doc.data()!["category"],doc.data()!["added_by"],doc.data()!["edited_by"],doc.data()!["available"]);
   }
 
   List<Product> dataListFromSnapshot(QuerySnapshot querySnapshot) {
@@ -42,6 +44,7 @@ class Product{
         dataMap['url'],
         dataMap['added_by'],
         dataMap['edited_by'],
+        dataMap['available']
       );
     }).toList();
   }

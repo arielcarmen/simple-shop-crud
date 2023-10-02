@@ -59,9 +59,7 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (_user.photoURL != null) Container(
               height: MediaQuery.of(context).size.width*0.25,
@@ -97,20 +95,26 @@ class _UserInfoScreenState extends State<UserInfoScreen> {
               ),
             ),
             const SizedBox(height: 8.0),
-            Text(
-              _user.displayName!,
-              style: TextStyle(
-                color: Colors.yellow[350],
-                fontSize: 26,
+            FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Text(
+                _user.displayName!,
+                style: TextStyle(
+                  color: Colors.yellow[350],
+                  fontSize: 26,
+                ),
               ),
             ),
             const SizedBox(height: 8.0),
-            Text(
-              _user.email!,
-              style: TextStyle(
-                color: Colors.orange[600],
-                fontSize: 20,
-                letterSpacing: 0.5,
+            FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Text(
+                _user.email!,
+                style: TextStyle(
+                  color: Colors.orange[600],
+                  fontSize: 20,
+                  letterSpacing: 0.5,
+                ),
               ),
             ),
             const SizedBox(height: 24.0),

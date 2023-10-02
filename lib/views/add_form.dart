@@ -36,6 +36,7 @@ class _AddFormState extends State<AddForm> {
   final TextEditingController tDescription = TextEditingController();
   var db = FirebaseFirestore.instance;
   String dropdownValue = 'Laits';
+  bool availability = true;
 
   static const double _separator = 15.0;
 
@@ -142,9 +143,23 @@ class _AddFormState extends State<AddForm> {
                             )
                         ),
                       ),
+                      Row(
+                        children: [
+                          Switch(
+                            value: availability,
+                            onChanged: (bool value) {
+                              setState(() {
+                                availability = value;
+                              });
+                            },
+                          ),
+                          availability ? Text("Disponible") : Text("Indisponible")
+                        ],
+                      ),
                       const SizedBox(
                         height: _separator,
                       ),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -152,7 +167,7 @@ class _AddFormState extends State<AddForm> {
                             child: const Text('Ajouter'),
                             onPressed: () async {
                               if( _formKey.currentState!.validate()){
-                                await addProduct(tName.text, tDescription.text, int.parse(tPrice.text), "url", widget.category, _user.displayName, "no one")
+                                await addProduct(tName.text, tDescription.text, int.parse(tPrice.text), "url", widget.category, _user.displayName, "no one", availability)
                                     .then((value) => tName.clear())
                                     .then((value) => tPrice.clear())
                                     .then((value) => tDescription.clear())
@@ -183,11 +198,11 @@ class _AddFormState extends State<AddForm> {
     );
   }
 
-  Future<void> addProduct(name, details, price, url, category, addedBy, editedBy) async {
+  Future<void> addProduct(name, details, price, url, category, addedBy, editedBy, available) async {
     if(details == ""){
       details = "Aucune note";
     }
-    final Product article = Product(name, details, price, category, url, addedBy, editedBy);
+    final Product article = Product(name, details, price, category, url, addedBy, editedBy, available);
     db.collection('articles')
         .add(article.toMap())
         .then((value) => ScaffoldMessenger.of(context).showSnackBar(

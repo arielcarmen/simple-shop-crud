@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:m_ola/utils/tools.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/product.dart';
@@ -85,7 +84,7 @@ class _ProductListState extends State<ProductList> {
                       onDoubleTap: (){
                         if (isAdmin){
                           Product sProduct = Product(data['name'], data['details'], data['price'],
-                              data['category'], data['url'], data['added_by'], data['edited_by']);
+                              data['category'], data['url'], data['added_by'], data['edited_by'], data['available']);
                           Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) => ProductEditForm(documentId: document.id,product: sProduct))
                           );
@@ -99,7 +98,8 @@ class _ProductListState extends State<ProductList> {
                       child: ListTile(
                         contentPadding: const EdgeInsets.symmetric(vertical: 5,horizontal: 15),
                         onTap: (){
-                          Product sProduct = Product(data['name'], data['details'], data['price'], data['category'], data['url'], data['added_by'], data['edited_by']);
+                          Product sProduct = Product(data['name'], data['details'], data['price'], data['category'],
+                              data['url'], data['added_by'], data['edited_by'], data['available']);
                           showDialog(
                               context: context,
                               builder: (BuildContext context){

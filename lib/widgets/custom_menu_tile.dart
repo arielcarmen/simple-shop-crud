@@ -26,10 +26,16 @@ class CustomMenuTile extends StatelessWidget {
               height: 50,
               width: 50,
             ),
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 16
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 5.0),
+              child: FittedBox(
+                fit: BoxFit.fitWidth,
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 16
+                  ),
+                ),
               ),
             )
           ],

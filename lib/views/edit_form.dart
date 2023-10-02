@@ -28,10 +28,13 @@ class _ProductEditFormState extends State<ProductEditForm> {
 
   final CollectionReference _productsStream = FirebaseFirestore.instance.collection('articles');
 
+  late bool availability;
+
   @override
   void initState() {
     _user = getLoggedInUser();
     dropdownValue = widget.product.category;
+    availability = widget.product.available;
     super.initState();
   }
 
@@ -148,6 +151,19 @@ class _ProductEditFormState extends State<ProductEditForm> {
                             )
                         ),
                       ),
+                      Row(
+                        children: [
+                          Switch(
+                            value: availability,
+                            onChanged: (bool value) {
+                              setState(() {
+                                availability = value;
+                              });
+                            },
+                          ),
+                          availability ? Text("Disponible") : Text("Indisponible")
+                        ],
+                      ),
                       const SizedBox(
                         height: _separator,
                       ),
@@ -158,7 +174,7 @@ class _ProductEditFormState extends State<ProductEditForm> {
                             child: const Text('Modifier'),
                             onPressed: () async {
                               if( _formKey.currentState!.validate()){
-                                await editProduct(widget.documentId ,tName.text, tDescription.text, int.parse(tPrice.text), dropdownValue, _user.displayName)
+                                await editProduct(widget.documentId ,tName.text, tDescription.text, int.parse(tPrice.text), dropdownValue, _user.displayName, availability)
                                     .then((value) => tName.clear())
                                     .then((value) => tPrice.clear())
                                     .then((value) => tDescription.clear())
@@ -179,12 +195,12 @@ class _ProductEditFormState extends State<ProductEditForm> {
     );
   }
 
-  Future<void> editProduct(documentId, name, details, int price, category, editedBy) async {
+  Future<void> editProduct(documentId, name, details, int price, category, editedBy, available) async {
     if(details == ""){
       details = "Aucune note";
     }
     _productsStream.doc(documentId)
-        .update({"name": name, "details": details,"price": price,"category": category,"edited_by": editedBy,
+        .update({"name": name, "details": details,"price": price,"category": category,"edited_by": editedBy, "available": available
     }).then((value) => ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('$name modifié !'), duration: Duration(milliseconds: 800),))).onError((error, stackTrace) => ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Erreur')))).then((value) => Navigator.of(context).pop());
